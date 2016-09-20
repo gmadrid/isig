@@ -9,6 +9,7 @@ pub type bool = u8;
 
 pub type CGColorRenderingIntent = i32;
 pub const kCGRenderingIntentDefault: CGColorRenderingIntent = 0;
+// TODO: make this a lib and uncomment these.
 //pub const kCGRenderingIntentAbsoluteColorimetric: CGColorRenderingIntent = 1;
 //pub const kCGRenderingIntentRelativeColorimetric: CGColorRenderingIntent = 2;
 //pub const kCGRenderingIntentPerceptual: CGColorRenderingIntent = 3;
