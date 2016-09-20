@@ -30,36 +30,6 @@ impl Drop for CGImage {
 }
 
 impl_TCFType!(CGImage, CGImageRef, CGImageGetTypeID);
-// impl TCFType<CGImageRef> for CGImage {
-// 	#[inline]
-// 	fn as_concrete_TypeRef(&self) -> CGImageRef {
-// 		self.obj
-// 	}
-
-// 	#[inline]
-// 	unsafe fn wrap_under_get_rule(reference: CGImageRef) -> CGImage {
-// 		let reference: CGImageRef = mem::transmute(CFRetain(mem::transmute(reference)));
-// 		TCFType::wrap_under_create_rule(reference)
-// 	}
-
-// 	#[inline]
-// 	unsafe fn wrap_under_create_rule(obj: CGImageRef) -> CGImage {
-// 		CGImage { obj: obj }
-// 	}
-
-// 	#[inline]
-// 	fn as_CFTypeRef(&self) -> CFTypeRef {
-// 		unsafe {
-// 			mem::transmute(self.as_concrete_TypeRef())
-// 		}
-// 	}
-
-// 	fn type_id() -> CFTypeID {
-// 		unsafe {
-// 			CGImageGetTypeID()
-// 		}
-// 	}
-// }
 
 impl CGImage {
 	pub fn new(bytes: &[u8]) -> Result<CGImage,()> {
