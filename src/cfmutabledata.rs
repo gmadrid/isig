@@ -34,6 +34,7 @@ impl CFMutableData {
     }
   }
 
+  #[inline]
   pub fn len(&self) -> CFIndex {
     unsafe { CFDataGetLength(mem::transmute(self.as_concrete_TypeRef())) }
   }
@@ -50,7 +51,5 @@ impl CFMutableData {
 
 #[link(name = "CoreFoundation", kind = "framework")]
 extern "C" {
-  // 	fn CFDataAppendBytes(theData: CFMutableDataRef, bytes: *const u8, length: CFIndex);
   fn CFDataCreateMutable(allocator: CFAllocatorRef, capacity: CFIndex) -> CFMutableDataRef;
-//  fn CFDataGetLength(data: CFMutableDataRef) -> CFIndex;
 }
