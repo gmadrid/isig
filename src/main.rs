@@ -20,21 +20,37 @@ use std::path::Path;
 use std::vec::Vec;
 
 fn save_image_to_file(image: &CGImage, path: &Path) -> Result<(), ()> {
+  let out_file = try!(File::create(path).map_err(|_| ()));
+  try!(write_jpeg(image, out_file));
+  Ok(())
+}
+
+fn write_jpeg<T>(image: &CGImage, mut w: T) -> Result<(), ()>  where T: Write + Sized {
+  // let data = try!(CFMutableData::new(0));
+  // let dest = CGImageDestination::jpg_destination_with_data(&data);
+  // dest.add_image(image);
+  // try!(dest.finalize());
+  let bytes = try!(jpeg_data_for_image(image));
+  try!(w.write_all(&bytes).map_err(|_| ()));
+  Ok(())
+}
+
+fn jpeg_data_for_image(image: &CGImage) -> Result<Vec<u8>, ()> {
   let data = try!(CFMutableData::new(0));
   let dest = CGImageDestination::jpg_destination_with_data(&data);
   dest.add_image(image);
   try!(dest.finalize());
-
-  let mut out_file = File::create(path).unwrap();
-  try!(out_file.write(data.bytes()).map_err(|_| ()));
-
-  Ok(())
+  let mut vec = Vec::new();
+  vec.extend_from_slice(data.bytes());
+  Ok(vec)
+//  Ok(Box::<[u8]>::new(data.bytes()));
+//  try!(w.write_all(data.bytes()).map_err(|_| ()));
 }
 
 fn main() {
   let pathbuf = env::current_dir().unwrap();
   let filename = pathbuf
-			//.parent().unwrap()
+			.parent().unwrap()
 			.join("sample").join("biel.jpg");
   let mut f = File::open(filename).unwrap();
   let mut image_buffer: Vec<u8> = Vec::new();
