@@ -67,5 +67,11 @@ fn main() {
   img.draw_into_context(&smcolor_context);
   let smcolor_image = CGImage::image_from_bitmap_context(&smcolor_context).unwrap();
   save_image_to_file(&smcolor_image, Path::new("smallcolor.jpg")).unwrap();
+
+  let big_context = CGContext::create_bitmap_context(200, 200, 8, 0, &grayscale_space, 0);
+  small_image.draw_into_context(&big_context);
+  let big_image = CGImage::image_from_bitmap_context(&big_context).unwrap();
+  save_image_to_file(&big_image, Path::new("embiggened.jpg")).unwrap();
+
   println!("Wrote file.");
 }
