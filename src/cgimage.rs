@@ -102,6 +102,6 @@ extern "C" {
   fn CGImageGetHeight(image: CGImageRef) -> size_t;
   fn CGImageGetTypeID() -> CFTypeID;
   fn CGImageGetWidth(image: CGImageRef) -> size_t;
-  // Functionally identical to CFRelease, but with safety guarantees that I don't need.
-  // fn CGImageRelease(image: CFTypeRef);
+// Functionally identical to CFRelease, but with safety guarantees that I don't need.
+// fn CGImageRelease(image: CFTypeRef);
 }

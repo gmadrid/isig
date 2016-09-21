@@ -35,8 +35,8 @@ fn save_image_to_file(image: &CGImage, path: &Path) -> Result<(), ()> {
 
 fn main() {
   let pathbuf = env::current_dir().unwrap();
-  let filename = pathbuf//.parent()
-//    .unwrap()
+  let filename = pathbuf.parent()
+    .unwrap()
     .join("sample")
     .join("biel.jpg");
   let mut f = File::open(filename).unwrap();
