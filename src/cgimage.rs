@@ -18,6 +18,9 @@ pub const kCGRenderingIntentDefault: CGColorRenderingIntent = 0;
 // pub const kCGRenderingIntentPerceptual: CGColorRenderingIntent = 3;
 // pub const kCGRenderingIntentSaturation: CGColorRenderingIntent = 4;
 
+pub type CGImageAlphaInfo = u32;
+pub const kCGImageAlphaNoneSkipFirst: CGImageAlphaInfo = 6;
+
 #[repr(C)]
 pub struct __CGImage;
 
@@ -107,7 +110,7 @@ extern "C" {
                                        shouldInterpolate: bool,
                                        intent: CGColorRenderingIntent)
       -> CGImageRef;
-//  fn CGImageGetBytesPerRow(image: CGImageRef) -> size_t;
+  //  fn CGImageGetBytesPerRow(image: CGImageRef) -> size_t;
   fn CGImageGetHeight(image: CGImageRef) -> size_t;
   fn CGImageGetTypeID() -> CFTypeID;
   fn CGImageGetWidth(image: CGImageRef) -> size_t;
