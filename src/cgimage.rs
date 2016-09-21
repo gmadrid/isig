@@ -62,9 +62,9 @@ impl CGImage {
     }
   }
 
-  pub fn bytes_per_row(&self) -> size_t {
-    unsafe { CGImageGetBytesPerRow(self.as_concrete_TypeRef()) }
-  }
+  // pub fn bytes_per_row(&self) -> size_t {
+  //   unsafe { CGImageGetBytesPerRow(self.as_concrete_TypeRef()) }
+  // }
 
   pub fn height(&self) -> size_t {
     unsafe { CGImageGetHeight(self.as_concrete_TypeRef()) }
@@ -77,9 +77,11 @@ impl CGImage {
   pub fn draw_into_context(&self, context: &CGContext) {
     // TODO: This is just here until context.draw_image() is implemented in core_graphics.
     unsafe {
+      let height = CGBitmapContextGetHeight(context.as_concrete_TypeRef());
+      let width = CGBitmapContextGetWidth(context.as_concrete_TypeRef());
       CGContextDrawImage(context.as_concrete_TypeRef(),
                          CGRect::new(&CGPoint::new(0.0, 0.0),
-                                     &CGSize::new(self.width() as f64, self.height() as f64)),
+                                     &CGSize::new(width as f64, height as f64)),
                          self.as_concrete_TypeRef())
     }
   }
@@ -95,6 +97,8 @@ pub fn create_gray_color_space() -> CGColorSpace {
 #[link(name = "CoreGraphics", kind = "framework")]
 extern "C" {
   fn CGBitmapContextCreateImage(context: CGContextRef) -> CGImageRef;
+  fn CGBitmapContextGetHeight(context: CGContextRef) -> size_t;
+  fn CGBitmapContextGetWidth(context: CGContextRef) -> size_t;
   fn CGColorSpaceCreateDeviceGray() -> CGColorSpaceRef;
   fn CGContextDrawImage(context: CGContextRef, rect: CGRect, image: CGImageRef);
 
@@ -103,7 +107,7 @@ extern "C" {
                                        shouldInterpolate: bool,
                                        intent: CGColorRenderingIntent)
       -> CGImageRef;
-  fn CGImageGetBytesPerRow(image: CGImageRef) -> size_t;
+//  fn CGImageGetBytesPerRow(image: CGImageRef) -> size_t;
   fn CGImageGetHeight(image: CGImageRef) -> size_t;
   fn CGImageGetTypeID() -> CFTypeID;
   fn CGImageGetWidth(image: CGImageRef) -> size_t;
