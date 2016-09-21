@@ -7,19 +7,7 @@ use std::mem;
 use std::ptr;
 use std::slice;
 
-#[repr(C)]
-pub struct __CFMutableData;
-
-pub type CFMutableDataRef = *const __CFMutableData;
-
-pub struct CFMutableData(CFMutableDataRef);
-
-impl Drop for CFMutableData {
-  fn drop(&mut self) {
-    unsafe { CFRelease(self.as_CFTypeRef()) }
-  }
-}
-
+types_CFType!(CFMutableData, CFMutableDataRef, __CFMutableData);
 impl_TCFType!(CFMutableData, CFMutableDataRef, CFDataGetTypeID);
 
 impl CFMutableData {

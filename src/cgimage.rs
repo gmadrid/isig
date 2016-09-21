@@ -1,6 +1,6 @@
 #![allow(improper_ctypes, non_camel_case_types, non_upper_case_globals)]
 
-use core_foundation::base::{CFTypeID, CFTypeRef, TCFType};
+use core_foundation::base::{CFRelease, CFTypeID, TCFType};
 use core_graphics::color_space::{CGColorSpace, CGColorSpaceRef};
 use core_graphics::context::{CGContext, CGContextRef};
 use core_graphics::data_provider::{CGDataProvider, CGDataProviderRef};
@@ -21,19 +21,7 @@ pub const kCGRenderingIntentDefault: CGColorRenderingIntent = 0;
 pub type CGImageAlphaInfo = u32;
 pub const kCGImageAlphaNoneSkipFirst: CGImageAlphaInfo = 6;
 
-#[repr(C)]
-pub struct __CGImage;
-
-pub type CGImageRef = *const __CGImage;
-
-pub struct CGImage(CGImageRef);
-
-impl Drop for CGImage {
-  fn drop(&mut self) {
-    unsafe { CGImageRelease(self.as_CFTypeRef()) }
-  }
-}
-
+types_CFType!(CGImage, CGImageRef, __CGImage);
 impl_TCFType!(CGImage, CGImageRef, CGImageGetTypeID);
 
 impl CGImage {
@@ -114,5 +102,6 @@ extern "C" {
   fn CGImageGetHeight(image: CGImageRef) -> size_t;
   fn CGImageGetTypeID() -> CFTypeID;
   fn CGImageGetWidth(image: CGImageRef) -> size_t;
-  fn CGImageRelease(image: CFTypeRef);
+  // Functionally identical to CFRelease, but with safety guarantees that I don't need.
+  // fn CGImageRelease(image: CFTypeRef);
 }

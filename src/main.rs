@@ -4,6 +4,8 @@ extern crate core_foundation_sys;
 extern crate core_graphics;
 extern crate libc;
 
+#[macro_use]
+mod macros;
 mod cgimage;
 mod cfmutabledata;
 mod cgimagedestination;

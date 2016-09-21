@@ -9,19 +9,7 @@ use core_foundation_sys::base::CFRelease;
 use libc::size_t;
 use std::ptr;
 
-#[repr(C)]
-pub struct __CGImageDestination;
-
-pub type CGImageDestinationRef = *const __CGImageDestination;
-
-pub struct CGImageDestination(CGImageDestinationRef);
-
-impl Drop for CGImageDestination {
-  fn drop(&mut self) {
-    unsafe { CFRelease(self.as_CFTypeRef()) }
-  }
-}
-
+types_CFType!(CGImageDestination, CGImageDestinationRef, __CGImageDestination);
 impl_TCFType!(CGImageDestination,
               CGImageDestinationRef,
               CGImageDestinationGetTypeID);
