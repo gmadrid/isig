@@ -1,0 +1,2 @@
+### isig - This package is obsolete and probably soon to be deleted. Look at my image_tools repo. Or even better, look at https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0ahUKEwjD_s3KyaPPAhUC44MKHWx5AR0QFggcMAA&url=https%3A%2F%2Fgithub.com%2Fservo%2Fcore-graphics-rs&usg=AFQjCNHiabF0ulLVF4bRaZ4pcpiOH_d90w&sig2=L0Uehv60vFhQWdEdHhgTBQ&bvm=bv.133700528,bs.2,d.dmo which has a CGImage pull request lingering. 
+
