@@ -1,11 +1,16 @@
 #![allow(improper_ctypes, non_camel_case_types, non_upper_case_globals)]
 
+use cfmutabledata::CFMutableData;
+use cgimagedestination::CGImageDestination;
 use core_foundation::base::{CFRelease, CFTypeID, TCFType};
 use core_graphics::color_space::{CGColorSpace, CGColorSpaceRef};
 use core_graphics::context::{CGContext, CGContextRef};
 use core_graphics::data_provider::{CGDataProvider, CGDataProviderRef};
 use core_graphics::geometry::{CGPoint, CGRect, CGSize};
 use libc::{c_void, size_t};
+use std::fs::File;
+use std::io::Write;
+use std::path::Path;
 use std::ptr;
 
 pub type bool = u8;
@@ -76,9 +81,32 @@ impl CGImage {
                          self.as_concrete_TypeRef())
     }
   }
+
+  pub fn jpeg_data(&self) -> Result<Vec<u8>, ()> {
+    let data = try!(CFMutableData::new(0));
+    let dest = CGImageDestination::jpg_destination_with_data(&data);
+    dest.add_image(self);
+    try!(dest.finalize());
+    let mut vec = Vec::new();
+    vec.extend_from_slice(data.bytes());
+    Ok(vec)
+  }
+
+  pub fn write_jpeg<T>(&self, mut w: T) -> Result<(), ()>
+    where T: Write + Sized {
+    let bytes = try!(self.jpeg_data());
+    try!(w.write_all(&bytes).map_err(|_| ()));
+    Ok(())
+  }
+
+  pub fn save_jpeg_to_file(&self, path: &Path) -> Result<(), ()> {
+    let out_file = try!(File::create(path).map_err(|_| ()));
+    try!(self.write_jpeg(out_file));
+    Ok(())
+  }
 }
 
-pub fn create_gray_color_space() -> CGColorSpace {
+pub fn create_device_gray_color_space() -> CGColorSpace {
   unsafe {
     let color_space = CGColorSpaceCreateDeviceGray();
     TCFType::wrap_under_create_rule(color_space)
@@ -102,6 +130,6 @@ extern "C" {
   fn CGImageGetHeight(image: CGImageRef) -> size_t;
   fn CGImageGetTypeID() -> CFTypeID;
   fn CGImageGetWidth(image: CGImageRef) -> size_t;
-  // Functionally identical to CFRelease, but with safety guarantees that I don't need.
-  // fn CGImageRelease(image: CFTypeRef);
+// Functionally identical to CFRelease, but with safety guarantees that I don't need.
+// fn CGImageRelease(image: CFTypeRef);
 }
